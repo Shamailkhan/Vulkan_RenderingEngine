@@ -18,9 +18,15 @@
     <ClInclude Include="GLFWWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="VulkanInstanceProvider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GLFWWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VulkanInstanceProvider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

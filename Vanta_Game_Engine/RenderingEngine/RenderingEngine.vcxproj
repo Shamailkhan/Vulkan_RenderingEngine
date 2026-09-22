@@ -20,9 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GLFWWindow.h" />
+    <ClInclude Include="VulkanInstanceProvider.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GLFWWindow.cpp" />
+    <ClCompile Include="VulkanInstanceProvider.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -118,8 +120,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(VULKAN_SDK)\Include;C:\Users\Test\Downloads\glfw-3.5.1.bin.WIN64\glfw-3.5.1.bin.WIN64\include;$(SolutionDir)RenderingEngine\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
