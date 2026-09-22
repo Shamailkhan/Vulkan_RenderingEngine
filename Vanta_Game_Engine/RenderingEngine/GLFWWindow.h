@@ -23,7 +23,7 @@ public :
    // Internal initialization
    // ------------------------------------------------------------
 
-	inline void SetRrsizable(bool flag) { isResized = false; }
+	inline void SetRrsizable(bool flag) { isResized = flag; }
 
 	uint32_t getWidth() const;
 	uint32_t getHeight() const;
