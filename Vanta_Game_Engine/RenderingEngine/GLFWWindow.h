@@ -3,6 +3,7 @@
 #include <String>
 #include <vector>
 #include <cstdint>
+#include <glm/glm.hpp>
 //core responsibilitiies   // framebuffer size
 //glfw initialization     //Window title
 // glfw termination		 //Mouse event handler
@@ -22,7 +23,7 @@ public :
    // Internal initialization
    // ------------------------------------------------------------
 
-	
+	inline void SetRrsizable(bool flag) { isResized = false; }
 
 	uint32_t getWidth() const;
 	uint32_t getHeight() const;
@@ -36,9 +37,10 @@ public :
 	void Show();
 	void Hide();
 
-
+	void PollEvent();
 	double getMouseX()const;
 	double getMouseY()const;
+	glm::dvec2 getMouse()const;
 
 	bool isKeyPressed(int key)const;
 	bool isKeyRelease(int key)const;

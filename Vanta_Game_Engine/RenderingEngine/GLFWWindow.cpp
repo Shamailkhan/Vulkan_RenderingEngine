@@ -30,7 +30,7 @@ bool GLFWWindow::Initialization()
 		return false;
 	}
 	// create window 
-
+	//step 2 craete window 
 	if (!CreateWindow())
 	{
 		std::cout << "Failed to create GLFW window"<<std::endl;
@@ -39,6 +39,7 @@ bool GLFWWindow::Initialization()
 
 
 	}
+	//register the call back such as frame buffer size
 	//Register resize , mouse , keyboard etc callbacks
 	RegisterCallbacks();
 
@@ -56,6 +57,21 @@ bool GLFWWindow::Initialization()
 
 void GLFWWindow::Shutdown()
 {
+	if (!m_initialized && glfw_window == nullptr)
+		return;
+	if (glfw_window)
+	{
+		glfwDestroyWindow(glfw_window);
+		glfw_window = nullptr;
+	}
+	glfwTerminate();
+
+	frameBufferHeight = 0;
+	frameBufferWidth = 0;
+	isResized = false;
+	m_initialized = false;
+
+
 }
 
 bool GLFWWindow::InitializeGLFW()
@@ -182,4 +198,63 @@ void GLFWWindow::Hide()
 		return;
 
 	glfwHideWindow(glfw_window);
+}
+
+void GLFWWindow::PollEvent()
+{
+	//this function tell GLFW to process all the pending window and input events
+	if (!glfw_window)
+		return;
+
+	glfwPollEvents();
+}
+
+double GLFWWindow::getMouseX() const
+{
+	if (!glfw_window)
+		return 0;
+	double x;
+	double y;
+	glfwGetCursorPos(glfw_window, &x, &y);
+
+
+	return x;
+}
+
+double GLFWWindow::getMouseY() const
+{
+	if (!glfw_window)
+		return 0;
+	double x;
+	double y;
+	glfwGetCursorPos(glfw_window, &x, &y);
+
+
+	return y;
+}
+
+glm::dvec2 GLFWWindow::getMouse() const
+{
+	if (!glfw_window)
+		return glm::dvec2(0,0);
+	double x;
+	double y;
+	glfwGetCursorPos(glfw_window, &x, &y);
+	return glm::dvec2(x,y);
+}
+
+bool GLFWWindow::isKeyPressed(int key) const
+{
+	if (!glfw_window)
+		return false;
+	
+	return glfwGetKey(glfw_window, key)== GLFW_PRESS;
+}
+
+bool GLFWWindow::isKeyRelease(int key) const
+{
+	if (!glfw_window)
+		return false;
+
+	return glfwGetKey(glfw_window, key) == GLFW_RELEASE;
 }
