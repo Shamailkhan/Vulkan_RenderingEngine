@@ -32,21 +32,34 @@ VulkanInstanceProvider::~VulkanInstanceProvider()
 
 }
 
-bool VulkanInstanceProvider::Initialization()
+bool VulkanInstanceProvider::Initialization(const std::vector<const char*>& requiredExtensions)
 {
 	if (VulkanInitiazed)
 		return true;
 
-	if (!CreateInstance())
+	if (!CreateInstance(requiredExtensions))
+	{
+		std::cout << "Failed to create Vulkan instance.\n";
 		return false; 
+	}
 
 	VulkanInitiazed = true;
+	std::cout << "Vulkan instance initialized successfully.\n";
 	return true;
 
 }
 
 void VulkanInstanceProvider::DeleteInstance()
 {
+
+	if (m_vulkanInstance != VK_NULL_HANDLE)
+	{
+		vkDestroyInstance(m_vulkanInstance,nullptr);
+		m_vulkanInstance = VK_NULL_HANDLE;
+	}
+	m_vulkanInstance = false;
+
+
 }
 
 VkInstance VulkanInstanceProvider::GetVulkanInstance() const
@@ -54,7 +67,7 @@ VkInstance VulkanInstanceProvider::GetVulkanInstance() const
 	return VkInstance();
 }
 
-bool VulkanInstanceProvider::CreateInstance()
+bool VulkanInstanceProvider::CreateInstance(const std::vector<const char*>& requiredExtensions)
 {
 
 	// --------------------------------------------------------
@@ -70,11 +83,45 @@ bool VulkanInstanceProvider::CreateInstance()
 		}
 			
 	}
+	// Application information
 	VkApplicationInfo appinfo{};
 	CreateAppInfo(appinfo);
 
+	// Instance creation information
 
-	return false;
+	VkInstanceCreateInfo createInfo{};
+
+	createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+	createInfo.pApplicationInfo = &appinfo;
+	createInfo.enabledExtensionCount = static_cast<uint32_t>(requiredExtensions.size());
+	createInfo.ppEnabledExtensionNames = requiredExtensions.data();
+
+	// Validation Layers
+	if (m_enableValidationLayers)
+	{
+		createInfo.enabledLayerCount = static_cast<uint32_t>(VALIDATION_LAYERS.size());
+
+		createInfo.ppEnabledLayerNames = VALIDATION_LAYERS.data();
+	}
+
+	else {
+		createInfo.enabledLayerCount = 0;
+		createInfo.ppEnabledLayerNames = nullptr;
+	}
+
+	VkResult result = vkCreateInstance(&createInfo, nullptr, &m_vulkanInstance);
+
+	if (result != VK_SUCCESS)
+	{
+		std::cout << "vkCreateInstance failed. VkResult = " << result << "\n";
+		m_vulkanInstance = VK_NULL_HANDLE;
+		return false;
+
+	}
+
+	std::cout << "Vulkan instance craeted \n";
+
+	return true;
 }
 
 bool VulkanInstanceProvider::CheckValidationLayerSupport() const
@@ -119,11 +166,73 @@ bool VulkanInstanceProvider::CheckValidationLayerSupport(const std::vector<const
 	}
 
 
-	return true;;
+	return true;
 }
+
+bool VulkanInstanceProvider::CheckExtensionSupport(const std::vector<const char*>& extension) const
+{
+	// Get Number Of Available Extensions
+	uint32_t extensionCount = 0;
+
+	VkResult result = vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
+
+	if (result != VK_SUCCESS)
+		return false;
+
+	
+	// Get Extension Properties
+	std::vector<VkExtensionProperties> avalibleExtensions(extensionCount);
+
+	result = vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, avalibleExtensions.data());
+	if (result != VK_SUCCESS)
+		return false;
+	// Check Requested Extensions
+	for (const char* requestedExtension : extension)
+	{
+		bool found = false;
+		for (const auto& availableExtension : avalibleExtensions)
+		{
+			if (std::strcmp(
+				requestedExtension,
+				availableExtension.extensionName
+			) == 0)
+			{
+				found = true;
+				break;
+			}
+		}
+		if (!found)
+		{
+			std::cout << "Missing Vulkan instance extension: "
+				<< requestedExtension
+				<< '\n';
+			return false;
+		}
+
+	}
+
+
+
+	return true;
+}
+
+
+
+
 
 void VulkanInstanceProvider::CreateAppInfo(VkApplicationInfo& appInfo)
 {
+	appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+	appInfo.applicationVersion = m_applicationVersion;
+	appInfo.pApplicationName = m_applicationName.c_str();
+	appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
+	appInfo.pEngineName = "VULKAN RENDERING ENGINE";
+
+	appInfo.apiVersion = VK_API_VERSION_1_3;
+
+
+
+
 }
 
 
