@@ -64,7 +64,7 @@ void VulkanInstanceProvider::DeleteInstance()
 
 VkInstance VulkanInstanceProvider::GetVulkanInstance() const
 {
-	return VkInstance();
+	return m_vulkanInstance;
 }
 
 bool VulkanInstanceProvider::CreateInstance(const std::vector<const char*>& requiredExtensions)

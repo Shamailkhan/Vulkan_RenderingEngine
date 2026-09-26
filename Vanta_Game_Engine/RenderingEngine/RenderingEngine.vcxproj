@@ -21,10 +21,12 @@
   <ItemGroup>
     <ClInclude Include="GLFWWindow.h" />
     <ClInclude Include="VulkanInstanceProvider.h" />
+    <ClInclude Include="VulkanSurfaceProvider.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GLFWWindow.cpp" />
     <ClCompile Include="VulkanInstanceProvider.cpp" />
+    <ClCompile Include="VulkanSurfaceProvider.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
