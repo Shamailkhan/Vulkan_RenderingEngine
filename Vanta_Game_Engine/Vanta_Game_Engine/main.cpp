@@ -1,4 +1,4 @@
-#include "GLFWWindow.h"
+﻿#include "GLFWWindow.h"
 
 #include "VulkanInstanceProvider.h"
 #include "VulkanSurfaceProvider.h"
@@ -141,3 +141,18 @@ int main()
 
     return 0;
 }
+//VANTA ENGINE
+//            │
+//┌───────────┴───────────┐
+//│                       │
+//▼                       ▼
+//GLFWWindow          VulkanInstanceProvider
+//│                       │
+//│                       │
+//GLFW only              Vulkan only
+//│                       │
+//└──────────┐    ┌───────┘
+//▼    ▼
+//VulkanSurfaceProvider
+//│
+//GLFW + Vulkan

@@ -22,11 +22,13 @@
     <ClInclude Include="include\GLFWWindow.h" />
     <ClInclude Include="include\VulkanInstanceProvider.h" />
     <ClInclude Include="include\VulkanSurfaceProvider.h" />
+    <ClInclude Include="VulkanPhysicalDeviceProvider.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GLFWWindow.cpp" />
     <ClCompile Include="src\VulkanInstanceProvider.cpp" />
     <ClCompile Include="src\VulkanSurfaceProvider.cpp" />
+    <ClCompile Include="VulkanPhysicalDeviceProvider.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
