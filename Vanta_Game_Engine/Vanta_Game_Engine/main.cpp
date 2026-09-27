@@ -1,20 +1,143 @@
-// Vanta_Game_Engine.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+#include "GLFWWindow.h"
+
+#include "VulkanInstanceProvider.h"
+#include "VulkanSurfaceProvider.h"
 
 #include <iostream>
 
+
 int main()
 {
-    std::cout << "Hello World!\n";
+    // ============================================================
+    // 1. Create GLFW Window
+    // ============================================================
+
+    GLFWWindow window(
+        1280,
+        720,
+        "Vanta Vulkan Engine"
+    );
+
+
+    if (!window.Initialize())
+    {
+        std::cerr
+            << "Failed to initialize GLFW window.\n";
+
+        return -1;
+    }
+
+
+    // ============================================================
+    // 2. Create Vulkan Platform Provider
+    // ============================================================
+
+    VulkanSurfaceProvider surfaceProvider;
+
+
+    // ============================================================
+    // 3. Ask GLFW/Vulkan bridge for required extensions
+    // ============================================================
+
+    std::vector<const char*> requiredExtensions =
+        surfaceProvider.GetRequiredInstanceExtensions();
+
+
+    if (requiredExtensions.empty())
+    {
+        std::cerr
+            << "Failed to get required Vulkan "
+            << "instance extensions.\n";
+
+        return -1;
+    }
+
+
+    // ============================================================
+    // 4. Create Vulkan Instance
+    // ============================================================
+
+    VulkanInstanceProvider instanceProvider(
+        "Vanta Vulkan Engine"
+    );
+
+
+    if (!instanceProvider.Initialization(
+        requiredExtensions))
+    {
+        std::cerr
+            << "Failed to initialize Vulkan instance.\n";
+
+        return -1;
+    }
+
+
+    // ============================================================
+    // 5. Create Vulkan Surface
+    // ============================================================
+
+    VkSurfaceKHR surface =
+        VK_NULL_HANDLE;
+
+
+    if (!surfaceProvider.CreateSurface(
+        instanceProvider.GetVulkanInstance(),
+        window.GetHandle(),
+        surface))
+    {
+        std::cerr
+            << "Failed to create Vulkan surface.\n";
+
+        return -1;
+    }
+
+
+    // ============================================================
+    // 6. Main Loop
+    // ============================================================
+
+    while (!window.ShouldClose())
+    {
+        window.PollEvents();
+
+
+        // --------------------------------------------------------
+        // Later:
+        //
+        // Vulkan rendering
+        // Physical device
+        // Logical device
+        // Swapchain
+        // Command buffers
+        // etc.
+        // --------------------------------------------------------
+    }
+
+
+    // ============================================================
+    // 7. Cleanup
+    // ============================================================
+
+    /*
+        IMPORTANT:
+
+        Surface must be destroyed BEFORE
+        the Vulkan instance.
+    */
+
+    surfaceProvider.DestroySurface(
+        instanceProvider.GetVulkanInstance(),
+        surface
+    );
+
+
+    instanceProvider.DeleteInstance();
+
+
+    /*
+        window destructor will call Shutdown()
+        and terminate GLFW.
+    */
+
+    return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
