@@ -1,6 +1,7 @@
 #pragma once
 #include <GLFW/glfw3.h>
-#include <String>
+
+#include <string>
 #include <vector>
 #include <cstdint>
 #include <glm/glm.hpp>
@@ -15,6 +16,10 @@ class GLFWWindow
 public :
 	GLFWWindow(uint32_t width, uint32_t height , const std::string& title);
 	~GLFWWindow();
+
+	GLFWWindow(const GLFWWindow&) = delete;
+	GLFWWindow& operator=(const GLFWWindow&) = delete;
+
 
 	//initialization 
 	bool Initialization();
@@ -44,7 +49,7 @@ public :
 
 	bool isKeyPressed(int key)const;
 	bool isKeyRelease(int key)const;
-
+	bool isMinimized() const;
 	GLFWwindow* getHandler() const;
 private:
 	bool InitializeGLFW();
@@ -52,6 +57,9 @@ private:
 	bool CreateWindow();
 
 	void RegisterCallbacks();
+
+	static void GLFWErrorCallback(int error, const char* desciption);
+	static void GLFWFramebufferResizedCallback(GLFWwindow* window, int width, int height);
 
 	uint32_t m_width;
 	uint32_t m_height;

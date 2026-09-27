@@ -57,7 +57,7 @@ void VulkanInstanceProvider::DeleteInstance()
 		vkDestroyInstance(m_vulkanInstance,nullptr);
 		m_vulkanInstance = VK_NULL_HANDLE;
 	}
-	m_vulkanInstance = false;
+	VulkanInitiazed = false;
 
 
 }

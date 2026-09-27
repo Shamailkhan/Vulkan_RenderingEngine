@@ -19,7 +19,7 @@ int main()
     );
 
 
-    if (!window.Initialize())
+    if (!window.Initialization())
     {
         std::cerr
             << "Failed to initialize GLFW window.\n";
@@ -40,7 +40,7 @@ int main()
     // ============================================================
 
     std::vector<const char*> requiredExtensions =
-        surfaceProvider.GetRequiredInstanceExtensions();
+        surfaceProvider.GetRequiredInstancesExtension();
 
 
     if (requiredExtensions.empty())
@@ -82,7 +82,7 @@ int main()
 
     if (!surfaceProvider.CreateSurface(
         instanceProvider.GetVulkanInstance(),
-        window.GetHandle(),
+        window.getHandler(),
         surface))
     {
         std::cerr
@@ -98,7 +98,7 @@ int main()
 
     while (!window.ShouldClose())
     {
-        window.PollEvents();
+        window.PollEvent();
 
 
         // --------------------------------------------------------
@@ -125,7 +125,7 @@ int main()
         the Vulkan instance.
     */
 
-    surfaceProvider.DestroySurface(
+    surfaceProvider.DestroyedVulkanSurface(
         instanceProvider.GetVulkanInstance(),
         surface
     );

@@ -13,6 +13,9 @@ GLFWWindow::~GLFWWindow()
 	Shutdown();
 }
 
+
+
+
 bool GLFWWindow::Initialization()
 {
 	// this is the main setup function
@@ -50,6 +53,8 @@ bool GLFWWindow::Initialization()
 		&frameBufferWidth,
 		&frameBufferHeight
 	);
+
+
 	m_initialized = true;
 
 	return true;
@@ -57,14 +62,18 @@ bool GLFWWindow::Initialization()
 
 void GLFWWindow::Shutdown()
 {
-	if (!m_initialized && glfw_window == nullptr)
-		return;
+	/*if (!m_initialized && glfw_window == nullptr)
+		return;*/
 	if (glfw_window)
 	{
 		glfwDestroyWindow(glfw_window);
 		glfw_window = nullptr;
 	}
-	glfwTerminate();
+	if (m_initialized)
+	{
+		glfwTerminate();
+		m_initialized = false;
+	}
 
 	frameBufferHeight = 0;
 	frameBufferWidth = 0;
@@ -76,6 +85,11 @@ void GLFWWindow::Shutdown()
 
 bool GLFWWindow::InitializeGLFW()
 {
+	glfwSetErrorCallback(
+		GLFWErrorCallback
+	);
+
+
 	if (glfwInit() == GLFW_FALSE)
 	{
 		std::cout << " failed to initialize GLFW" << std::endl;
@@ -137,6 +151,33 @@ void GLFWWindow::RegisterCallbacks()
 
 		});
 
+
+}
+//GLFW Error Callback
+void GLFWWindow::GLFWErrorCallback(int error, const char* description)
+{
+	std::cout<<"[GLFW ERROR] "
+		<< error
+		<< ": "
+		<< (description ? description : "Unknown error")
+		<< '\n';
+
+}
+
+void GLFWWindow::GLFWFramebufferResizedCallback(GLFWwindow* window, int width, int height)
+{
+	if (!window)
+		return;
+	GLFWWindow* glfwWindow = static_cast<GLFWWindow*> (glfwGetWindowUserPointer(window));
+
+	if (!glfwWindow)
+		return;
+
+	// Update framebuffer size
+
+	glfwWindow->frameBufferWidth = static_cast<uint32_t>(width);
+	glfwWindow->frameBufferHeight = static_cast<uint32_t>(height);
+	glfwWindow->isResized = true;
 
 }
 
@@ -257,4 +298,11 @@ bool GLFWWindow::isKeyRelease(int key) const
 		return false;
 
 	return glfwGetKey(glfw_window, key) == GLFW_RELEASE;
+}
+
+bool GLFWWindow::isMinimized() const
+{
+	return
+		frameBufferHeight == 0 ||
+		frameBufferWidth == 0;
 }

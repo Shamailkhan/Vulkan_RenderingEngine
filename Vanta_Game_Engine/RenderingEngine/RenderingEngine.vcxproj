@@ -19,14 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GLFWWindow.h" />
-    <ClInclude Include="VulkanInstanceProvider.h" />
-    <ClInclude Include="VulkanSurfaceProvider.h" />
+    <ClInclude Include="include\GLFWWindow.h" />
+    <ClInclude Include="include\VulkanInstanceProvider.h" />
+    <ClInclude Include="include\VulkanSurfaceProvider.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GLFWWindow.cpp" />
-    <ClCompile Include="VulkanInstanceProvider.cpp" />
-    <ClCompile Include="VulkanSurfaceProvider.cpp" />
+    <ClCompile Include="src\GLFWWindow.cpp" />
+    <ClCompile Include="src\VulkanInstanceProvider.cpp" />
+    <ClCompile Include="src\VulkanSurfaceProvider.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -80,6 +80,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetName>RenderingEngine</TargetName>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -145,7 +148,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(VULKAN_SDK)\Include;C:\Users\Test\Downloads\glfw-3.5.1.bin.WIN64\glfw-3.5.1.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VULKAN_SDK)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
