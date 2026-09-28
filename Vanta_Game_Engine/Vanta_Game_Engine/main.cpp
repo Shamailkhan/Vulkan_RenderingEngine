@@ -2,7 +2,7 @@
 
 #include "VulkanInstanceProvider.h"
 #include "VulkanSurfaceProvider.h"
-
+#include "VulkanPhysicalDeviceProvider.h"
 #include <iostream>
 
 
@@ -13,8 +13,8 @@ int main()
     // ============================================================
 
     GLFWWindow window(
-        1280,
-        720,
+        5000,
+        5000,
         "Vanta Vulkan Engine"
     );
 
@@ -90,8 +90,61 @@ int main()
 
         return -1;
     }
+    VulkanPhysicalDeviceProvider physicalDeviceProvider(
+        instanceProvider.GetVulkanInstance(),
+        surface
+    );
+
+    if (!physicalDeviceProvider.Initialize())
+    {
+        return -1;
+    }
+   
+    VkPhysicalDeviceProperties properties =
+        physicalDeviceProvider.getPhysicalDevicePropertices();
+
+    std::cout
+        << "GPU: "
+        << properties.deviceName
+        << '\n';
+    QueueFamilyIndices queueFamilies =
+        physicalDeviceProvider.GetQueueFamiliesIndices();
 
 
+    if (queueFamilies.graphicFamily.has_value())
+    {
+        std::cout
+            << "Graphics Queue Family: "
+            << queueFamilies.graphicFamily.value()
+            << '\n';
+    }
+
+
+    if (queueFamilies.presentFamily.has_value())
+    {
+        std::cout
+            << "Present Queue Family: "
+            << queueFamilies.presentFamily.value()
+            << '\n';
+    }
+
+
+    if (queueFamilies.computeFamily.has_value())
+    {
+        std::cout
+            << "Compute Queue Family: "
+            << queueFamilies.computeFamily.value()
+            << '\n';
+    }
+
+
+    if (queueFamilies.transferFamily.has_value())
+    {
+        std::cout
+            << "Transfer Queue Family: "
+            << queueFamilies.transferFamily.value()
+            << '\n';
+    }
     // ============================================================
     // 6. Main Loop
     // ============================================================
