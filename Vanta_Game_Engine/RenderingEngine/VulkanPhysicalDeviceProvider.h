@@ -66,7 +66,7 @@ private:
 
 	// select best physical device
 
-	bool ChooseBestPhysicalDevice();
+	bool  ChooseBestPhysicalDevice(std::vector<VkPhysicalDevice> devices);
 
 
 	// Check whether device is suitable
@@ -81,7 +81,7 @@ private:
 	
 	int RateDeviceSuitability(
 		VkPhysicalDevice device
-	) const ;
+	)  ;
 
 	const std::vector<const char*>&
 		GetRequiredDeviceExtensions() const;
@@ -103,7 +103,7 @@ private :
 
 	SwapChainSupportDetail m_swapchainSupport;
 
-
+	
 	bool m_initialized =false;
 
 
