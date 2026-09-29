@@ -17,6 +17,8 @@ VulkanPhysicalDeviceProvider::VulkanPhysicalDeviceProvider(VkInstance instance, 
 {
 	m_instance = instance;
 	m_surfaceinstance = surface;
+	
+	
 }
 
 VulkanPhysicalDeviceProvider::~VulkanPhysicalDeviceProvider()
@@ -167,7 +169,7 @@ bool VulkanPhysicalDeviceProvider::ChooseBestPhysicalDevice(std::vector<VkPhysic
 {
 	//numerical limit min means Initialized best SCore to the Smallest value that a int can represent 
 
-	int bestScore = std::numeric_limits<int>::min();
+	int bestScore = -1;
 
 	VkPhysicalDevice bestDevice = VK_NULL_HANDLE;
 	for (auto device : devices)
@@ -185,12 +187,17 @@ bool VulkanPhysicalDeviceProvider::ChooseBestPhysicalDevice(std::vector<VkPhysic
 			<< score
 			<< '\n';
 
-		if (score > bestScore)
+		if (score < 0)
+		{
+			continue;
+		}
+
+		if (bestDevice == VK_NULL_HANDLE ||
+			score > bestScore)
 		{
 			bestScore = score;
 
 			bestDevice = device;
-
 		}
 		
 
@@ -508,9 +515,20 @@ int VulkanPhysicalDeviceProvider::RateDeviceSuitability(VkPhysicalDevice device)
 
 	// Prefer discrete GPUs
 
-	if (properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU)
+	if (properties.deviceType ==
+		VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU)
+	{
+		score += 1000;
+	}
+	else if (properties.deviceType ==
+		VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU)
 	{
 		score += 500;
+	}
+	else if (properties.deviceType ==
+		VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU)
+	{
+		score += 250;
 	}
 	// More VRAM / larger heap is generally useful.
 	//

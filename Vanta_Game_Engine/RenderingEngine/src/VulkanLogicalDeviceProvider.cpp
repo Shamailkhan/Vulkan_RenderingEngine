@@ -244,7 +244,7 @@ std::vector<VkDeviceQueueCreateInfo> VulkanLogicalDeviceProvider::CreateQueueCre
 
     for (uint32_t queueFamily : uniqueFamilies)
     {
-        VkDeviceQueueCreateInfo queueCreateInfo;
+        VkDeviceQueueCreateInfo queueCreateInfo{};
         queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
         queueCreateInfo.pNext = nullptr;
         queueCreateInfo.queueFamilyIndex=queueFamily;

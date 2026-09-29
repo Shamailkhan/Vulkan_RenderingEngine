@@ -39,6 +39,7 @@ private:
 
 private:
 
+
 	VkPhysicalDevice m_physicalDevice = VK_NULL_HANDLE;
 
 	QueueFamilyIndices m_queueFamilyIndices;

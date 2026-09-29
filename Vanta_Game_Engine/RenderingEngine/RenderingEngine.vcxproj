@@ -24,6 +24,9 @@
     <ClInclude Include="include\VulkanLogicalDeviceProvider.h" />
     <ClInclude Include="include\VulkanPhysicalDeviceProvider.h" />
     <ClInclude Include="include\VulkanSurfaceProvider.h" />
+    <ClInclude Include="VulkanImage.h" />
+    <ClInclude Include="VulkanImageView.h" />
+    <ClInclude Include="VulkanSwapchainProvider.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GLFWWindow.cpp" />
@@ -31,6 +34,9 @@
     <ClCompile Include="src\VulkanLogicalDeviceProvider.cpp" />
     <ClCompile Include="src\VulkanPhysicalDeviceProvider.cpp" />
     <ClCompile Include="src\VulkanSurfaceProvider.cpp" />
+    <ClCompile Include="VulkanImage.cpp" />
+    <ClCompile Include="VulkanImageView.cpp" />
+    <ClCompile Include="VulkanSwapchainProvider.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
