@@ -39,6 +39,15 @@
     <ClInclude Include="VulkanImage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\VulkanImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VulkanImageView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VulkanSwapchainProvider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GLFWWindow.cpp">
