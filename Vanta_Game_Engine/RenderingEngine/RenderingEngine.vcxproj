@@ -20,17 +20,23 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\GLFWWindow.h" />
+    <ClInclude Include="include\VulkanImage.h" />
+    <ClInclude Include="include\VulkanImageView.h" />
     <ClInclude Include="include\VulkanInstanceProvider.h" />
     <ClInclude Include="include\VulkanLogicalDeviceProvider.h" />
     <ClInclude Include="include\VulkanPhysicalDeviceProvider.h" />
     <ClInclude Include="include\VulkanSurfaceProvider.h" />
+    <ClInclude Include="include\VulkanSwapchainProvider.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GLFWWindow.cpp" />
+    <ClCompile Include="src\VulkanImage.cpp" />
+    <ClCompile Include="src\VulkanImageView.cpp" />
     <ClCompile Include="src\VulkanInstanceProvider.cpp" />
     <ClCompile Include="src\VulkanLogicalDeviceProvider.cpp" />
     <ClCompile Include="src\VulkanPhysicalDeviceProvider.cpp" />
     <ClCompile Include="src\VulkanSurfaceProvider.cpp" />
+    <ClCompile Include="src\VulkanSwapchainProvider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
