@@ -1,6 +1,7 @@
 #pragma once
 #include "VulkanPhysicalDeviceProvider.h"
 #include "VulkanImage.h"
+#include "VulkanImageView.h"
 #include <vulkan/vulkan.h>
 #include <cstdint>
 #include <vector>
@@ -51,7 +52,7 @@ private:
 
 	VkSurfaceFormatKHR ChooseSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& formats)const;
 
-	VkPresentModeKHR  ChoosePresentMode(const std::vector<VkPresentModeKHR>& presentModes);
+	VkPresentModeKHR  ChoosePresentMode(const std::vector<VkPresentModeKHR>& presentModes) const;
 
 	VkExtent2D ChooseExtent(const  VkSurfaceCapabilitiesKHR & capabilitties)const;
 
@@ -77,7 +78,7 @@ private:
 
 	VkSwapchainKHR m_SwapChain = VK_NULL_HANDLE;
 	std::vector<VkImage> m_images;
-	std::vector<VkImageView> m_imagesViews;
+	std::vector<VulkanImageView> m_imagesViews;
 
 	VkFormat m_imagesFormat = VK_FORMAT_UNDEFINED;
 	VkExtent2D imageExtend{};
