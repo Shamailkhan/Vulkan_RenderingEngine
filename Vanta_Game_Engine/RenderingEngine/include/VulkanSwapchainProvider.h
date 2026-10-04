@@ -5,7 +5,7 @@
 #include <vulkan/vulkan.h>
 #include <cstdint>
 #include <vector>
-
+#include <array>
 class GLFWWindow;
 
 class VulkanSwapchainProvider
@@ -28,15 +28,15 @@ class VulkanSwapchainProvider
 	void DestroySwapChain();
 
 	//getter 
-	VkSwapchainKHR getSwapChain();
+	VkSwapchainKHR getSwapChain() { return m_SwapChain; }
 
-	std::vector<VkImage>& getSwapChainImages()const;
-	std::vector<VkImageView>& getSwapChainImageView() const;
+	std::vector<VkImage>& getSwapChainImages() { return  m_images; }
+	std::vector<VulkanImageView>& getSwapChainImageView() { return m_imagesViews; }
 
-	VkFormat getImageFormat() const;
-	VkExtent2D getExtent()const;
-	uint32_t getImageCount() const;
-	bool isInitialized();
+	VkFormat getImageFormat() const { return m_imagesFormat; }
+	VkExtent2D getExtent()const { return imageExtend; }
+	uint32_t getImageCount() const { return static_cast<uint32_t>(m_images.size()); }
+	bool isInitialized() { return isInitialized; }
 
 private:
 
@@ -61,7 +61,7 @@ private:
 	VkCompositeAlphaFlagBitsKHR ChooseCompositeAlpha(const VkSurfaceCapabilitiesKHR& capabilities) const;
 
 
-	VkSwapchainCreateInfoKHR CreateSwapChainCreateInfo(const SwapChainSupportDetail& supportDetail)const;
+	VkSwapchainCreateInfoKHR CreateSwapChainCreateInfo(const SwapChainSupportDetail& supportDetail);
 
 
 private:
@@ -83,6 +83,9 @@ private:
 	VkFormat m_imagesFormat = VK_FORMAT_UNDEFINED;
 	VkExtent2D imageExtend{};
 	bool isInitialized = false;
+
+	// VkSwapchainCreateInfoKHR is being used.
+	std::array<uint32_t, 2> m_sharedQueueFamilyIndices{};
 
 };
 

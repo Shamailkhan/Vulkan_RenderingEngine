@@ -131,7 +131,7 @@ bool VulkanSwapchainProvider::Initialize()
 	std::cout
 		<< "Vulkan swapchain initialized successfully."
 		<< std::endl;
-
+	return true;
 }
 
 bool VulkanSwapchainProvider::Recreate()
@@ -182,10 +182,12 @@ bool VulkanSwapchainProvider::Recreate()
 
 	if (!RetriveSwapChainImages())
 	{
+		DestroySwapChain();
 		return false;
 	}
 	if (!CreateSwapChainImagesView())
 	{
+		DestroySwapChain();
 		return false;
 	}
 	isInitialized = true;
@@ -429,7 +431,7 @@ SwapChainSupportDetail VulkanSwapchainProvider::QuerySwapChainSupport() const
 
 	if (formatCount > 0)
 	{
-		details.format.reserve(formatCount);
+		details.format.resize(formatCount);
 		result = vkGetPhysicalDeviceSurfaceFormatsKHR(m_physicalDevice, m_surface, &formatCount, details.format.data());
 
 		if (result != VK_SUCCESS)
@@ -576,77 +578,114 @@ VkCompositeAlphaFlagBitsKHR VulkanSwapchainProvider::ChooseCompositeAlpha(const 
 	return VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
 }
 
-VkSwapchainCreateInfoKHR VulkanSwapchainProvider::CreateSwapChainCreateInfo(const SwapChainSupportDetail& supportDetail) const
+VkSwapchainCreateInfoKHR VulkanSwapchainProvider::CreateSwapChainCreateInfo(const SwapChainSupportDetail& supportDetail) 
 {
-	
-	
-	VkSurfaceFormatKHR surfaceFormat = ChooseSurfaceFormat(supportDetail.format);
-	VkPresentModeKHR presentMode = ChoosePresentMode(supportDetail.presentMode);
+	VkSurfaceFormatKHR surfaceFormat =
+		ChooseSurfaceFormat(supportDetail.format);
 
-	VkExtent2D extent = ChooseExtent(supportDetail.capabilities);
-	
+	VkPresentModeKHR presentMode =
+		ChoosePresentMode(supportDetail.presentMode);
+
+	VkExtent2D extent =
+		ChooseExtent(supportDetail.capabilities);
+
 	uint32_t imageCount =
-		ChooseImageCount(
-			supportDetail.capabilities
-		);
+		ChooseImageCount(supportDetail.capabilities);
 
-	
-	
-	
-	VkSwapchainCreateInfoKHR SwapChianCreateInfo{};
-	SwapChianCreateInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-	SwapChianCreateInfo.pNext = nullptr;
-	SwapChianCreateInfo.flags = 0;
-	SwapChianCreateInfo.surface = m_surface;
-	SwapChianCreateInfo.minImageCount = imageCount;
-	SwapChianCreateInfo.imageFormat = surfaceFormat.format;
-	SwapChianCreateInfo.imageColorSpace = surfaceFormat.colorSpace;
-	SwapChianCreateInfo.imageExtent = extent;
-	SwapChianCreateInfo.imageArrayLayers = 1;
-	SwapChianCreateInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
-	if (m_queueFamilyIndices.graphicFamily.value() == m_queueFamilyIndices.presentFamily.value())
+
+	VkSwapchainCreateInfoKHR swapChainCreateInfo{};
+
+	swapChainCreateInfo.sType =
+		VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
+
+	swapChainCreateInfo.pNext = nullptr;
+
+	swapChainCreateInfo.flags = 0;
+
+	swapChainCreateInfo.surface = m_surface;
+
+	swapChainCreateInfo.minImageCount = imageCount;
+
+	swapChainCreateInfo.imageFormat =
+		surfaceFormat.format;
+
+	swapChainCreateInfo.imageColorSpace =
+		surfaceFormat.colorSpace;
+
+	swapChainCreateInfo.imageExtent =
+		extent;
+
+	swapChainCreateInfo.imageArrayLayers = 1;
+
+	swapChainCreateInfo.imageUsage =
+		VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+
+
+	// --------------------------------------------------------
+	// Queue family sharing mode
+	// --------------------------------------------------------
+
+	uint32_t graphicsFamily =
+		m_queueFamilyIndices.graphicFamily.value();
+
+	uint32_t presentFamily =
+		m_queueFamilyIndices.presentFamily.value();
+
+
+	if (graphicsFamily == presentFamily)
 	{
-		SwapChianCreateInfo.imageSharingMode =
+		// Both operations use the same queue family.
+		swapChainCreateInfo.imageSharingMode =
 			VK_SHARING_MODE_EXCLUSIVE;
 
-		SwapChianCreateInfo.queueFamilyIndexCount =
-			0;
+		swapChainCreateInfo.queueFamilyIndexCount = 0;
 
-		SwapChianCreateInfo.pQueueFamilyIndices =
-			nullptr;
+		swapChainCreateInfo.pQueueFamilyIndices = nullptr;
 	}
 	else
 	{
-		SwapChianCreateInfo.imageSharingMode = VK_SHARING_MODE_CONCURRENT;
+		// Graphics and presentation use different
+		// queue families.
+		swapChainCreateInfo.imageSharingMode =
+			VK_SHARING_MODE_CONCURRENT;
 
-		uint32_t queueFamilyIndices[] =
+
+		// IMPORTANT:
+		// This is a MEMBER of VulkanSwapchainProvider.
+		// It remains alive after this function returns.
+		m_sharedQueueFamilyIndices =
 		{
-			m_queueFamilyIndices.graphicFamily.value(),
-			m_queueFamilyIndices.presentFamily.value()
+			graphicsFamily,
+			presentFamily
 		};
-		SwapChianCreateInfo.queueFamilyIndexCount = 2;
-		SwapChianCreateInfo.pQueueFamilyIndices = nullptr;
 
+
+		swapChainCreateInfo.queueFamilyIndexCount = 2;
+
+		swapChainCreateInfo.pQueueFamilyIndices =
+			m_sharedQueueFamilyIndices.data();
 	}
-	SwapChianCreateInfo.preTransform =
+
+
+	swapChainCreateInfo.preTransform =
 		supportDetail.capabilities.currentTransform;
 
 
-	SwapChianCreateInfo.compositeAlpha =
+	swapChainCreateInfo.compositeAlpha =
 		ChooseCompositeAlpha(
 			supportDetail.capabilities
 		);
 
 
-	SwapChianCreateInfo.presentMode =
+	swapChainCreateInfo.presentMode =
 		presentMode;
 
-	SwapChianCreateInfo.clipped =
+	swapChainCreateInfo.clipped =
 		VK_TRUE;
 
-	SwapChianCreateInfo.oldSwapchain =
+	swapChainCreateInfo.oldSwapchain =
 		VK_NULL_HANDLE;
 
 
-	return SwapChianCreateInfo;
+	return swapChainCreateInfo;
 }

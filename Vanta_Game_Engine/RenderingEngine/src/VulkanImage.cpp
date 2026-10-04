@@ -105,9 +105,9 @@ bool VulkanImage::Create(VkDevice device, VkPhysicalDevice physical, uint32_t wi
 	{
 
 		std::cout << "Vulkan Image Creation Failed Image diamensions are zero" << std::endl;
+		return false;
 	}
 
-	return false;
 	// Destroy previous image if one exists
 	Destroy();
 	m_device = device;
