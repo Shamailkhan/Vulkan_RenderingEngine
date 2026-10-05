@@ -18,16 +18,16 @@ public:
 
 	void Destroy();
 	// Getters
-	VkImage GetImage() const;
-	VkImageView GetImageView() const;
+	VkImage GetImage() const { return m_depthImage; }
+	VkImageView GetImageView() const { return m_depthImageView; }
 
-	VkDeviceMemory GetMemory() const;
+	VkDeviceMemory GetMemory() const { return m_depthImageMemory; }
 
-	VkFormat GetFormat() const;
+	VkFormat GetFormat() const { return m_depthFormat; }
 
-	VkExtent2D GetExtent() const;
+	VkExtent2D GetExtent() const { return m_extent; }
 
-	bool IsInitialized() const;
+	bool IsInitialized() const { return m_initialized; }
 
 private:
 
@@ -46,7 +46,7 @@ private:
 
 	bool BindDepthImage();
 
-	bool CreateDepthImage();
+	bool CreateDepthImageView();
 
 private:
 	VkPhysicalDevice m_physicalDevice=VK_NULL_HANDLE;
