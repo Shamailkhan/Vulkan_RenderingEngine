@@ -11,7 +11,8 @@ VulkanDepthImage::VulkanDepthImage(
 	m_extent(other.m_extent),
 	m_depthFormat(other.m_depthFormat),
 	m_depthImage(std::move(other.m_depthImage)),
-	m_depthImageView(std::move(other.m_depthImageView))
+	m_depthImageView(std::move(other.m_depthImageView)),
+	m_initialized(other.m_initialized)
 {
 	other.m_physicalDevice = VK_NULL_HANDLE;
 	other.m_device = VK_NULL_HANDLE;
@@ -100,7 +101,7 @@ bool VulkanDepthImage::Initialization(VkPhysicalDevice physicalDevice, VkDevice 
 		, m_extent.height, m_depthFormat,
 		VK_IMAGE_TILING_OPTIMAL,
 		VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
-		VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT));
+		VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT))
 	{
 		std::cout
 			<< "VulkanDepthImage::Initialize - "
@@ -113,7 +114,8 @@ bool VulkanDepthImage::Initialization(VkPhysicalDevice physicalDevice, VkDevice 
 	VkImageAspectFlags aspectFlags = VK_IMAGE_ASPECT_DEPTH_BIT;
 	if (m_depthFormat == VK_FORMAT_D32_SFLOAT_S8_UINT || m_depthFormat == VK_FORMAT_D24_UNORM_S8_UINT)
 	{
-		aspectFlags != VK_IMAGE_ASPECT_STENCIL_BIT;
+		//|= is the bitwise OR assignment operator.
+		aspectFlags |= VK_IMAGE_ASPECT_STENCIL_BIT;
 	}
 
 	if (!m_depthImageView.Create(m_device, m_depthImage.getHandler(), m_depthFormat, aspectFlags))

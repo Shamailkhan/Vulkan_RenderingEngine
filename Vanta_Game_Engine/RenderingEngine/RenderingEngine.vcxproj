@@ -26,6 +26,7 @@
     <ClInclude Include="include\VulkanInstanceProvider.h" />
     <ClInclude Include="include\VulkanLogicalDeviceProvider.h" />
     <ClInclude Include="include\VulkanPhysicalDeviceProvider.h" />
+    <ClInclude Include="include\VulkanRenderPass.h" />
     <ClInclude Include="include\VulkanSurfaceProvider.h" />
     <ClInclude Include="include\VulkanSwapchainProvider.h" />
   </ItemGroup>
@@ -37,6 +38,7 @@
     <ClCompile Include="src\VulkanInstanceProvider.cpp" />
     <ClCompile Include="src\VulkanLogicalDeviceProvider.cpp" />
     <ClCompile Include="src\VulkanPhysicalDeviceProvider.cpp" />
+    <ClCompile Include="src\VulkanRenderPass.cpp" />
     <ClCompile Include="src\VulkanSurfaceProvider.cpp" />
     <ClCompile Include="src\VulkanSwapchainProvider.cpp" />
   </ItemGroup>
