@@ -26,6 +26,11 @@
     <ClInclude Include="include\VulkanInstanceProvider.h" />
     <ClInclude Include="include\VulkanLogicalDeviceProvider.h" />
     <ClInclude Include="include\VulkanPhysicalDeviceProvider.h" />
+    <ClInclude Include="include\VulkanPipeline.h" />
+    <ClInclude Include="include\VulkanPipelineCache.h" />
+    <ClInclude Include="include\VulkanPipelineLayout.h" />
+    <ClInclude Include="include\VulkanPipelineLayoutManager.h" />
+    <ClInclude Include="include\VulkanPipelineManager.h" />
     <ClInclude Include="include\VulkanRenderPass.h" />
     <ClInclude Include="include\VulkanSurfaceProvider.h" />
     <ClInclude Include="include\VulkanSwapchainProvider.h" />
@@ -38,6 +43,11 @@
     <ClCompile Include="src\VulkanInstanceProvider.cpp" />
     <ClCompile Include="src\VulkanLogicalDeviceProvider.cpp" />
     <ClCompile Include="src\VulkanPhysicalDeviceProvider.cpp" />
+    <ClCompile Include="src\VulkanPipeline.cpp" />
+    <ClCompile Include="src\VulkanPipelineCache.cpp" />
+    <ClCompile Include="src\VulkanPipelineLayout.cpp" />
+    <ClCompile Include="src\VulkanPipelineLayoutManager.cpp" />
+    <ClCompile Include="src\VulkanPipelineManager.cpp" />
     <ClCompile Include="src\VulkanRenderPass.cpp" />
     <ClCompile Include="src\VulkanSurfaceProvider.cpp" />
     <ClCompile Include="src\VulkanSwapchainProvider.cpp" />
