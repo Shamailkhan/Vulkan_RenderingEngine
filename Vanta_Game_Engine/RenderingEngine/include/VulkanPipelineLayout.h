@@ -4,6 +4,7 @@
 
 class VulkanPipelineLayout
 {
+public:
 	VulkanPipelineLayout() = default;
 	~VulkanPipelineLayout();
 
