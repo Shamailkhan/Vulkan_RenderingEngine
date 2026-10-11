@@ -2,7 +2,7 @@
 #include <VulkanPipelineLayout.h>
 #include <string>
 #include<unordered_map>
-
+#include <memory>
 class VulkanPipelineLayoutManager
 {
 
@@ -42,7 +42,7 @@ class VulkanPipelineLayoutManager
 private:
     VkDevice m_Device = VK_NULL_HANDLE;
 
-    std::unordered_map<std::string, VulkanPipelineLayout>m_layouts;
+    std::unordered_map<std::string, std::unique_ptr<VulkanPipelineLayout>>m_layouts;
 
     bool m_initialize=false;
 

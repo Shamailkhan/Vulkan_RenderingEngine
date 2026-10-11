@@ -83,7 +83,7 @@ VulkanPipelineLayout* VulkanPipelineLayoutManager::Get(const std::string& name)
 	{
 		return nullptr;
 	}
-	 return &layout->second;
+	return layout->second.get();      // non-const
 }
 
 const VulkanPipelineLayout* VulkanPipelineLayoutManager::Get(const std::string& name) const
@@ -96,7 +96,7 @@ const VulkanPipelineLayout* VulkanPipelineLayoutManager::Get(const std::string& 
 		return nullptr;
 	}
 
-	return &iterator->second;
+	return iterator->second.get();
 }
 
 bool VulkanPipelineLayoutManager::Exisit(const std::string& name) const

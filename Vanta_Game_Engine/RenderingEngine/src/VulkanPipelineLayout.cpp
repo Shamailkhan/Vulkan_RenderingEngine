@@ -78,7 +78,7 @@ bool VulkanPipelineLayout::CreatePipelineLayout(const std::vector<VkDescriptorSe
 	const std::vector<VkPushConstantRange>& pushConstantRanges)
 {
 
-	VkPipelineLayoutCreateInfo pipelineLayoutCreateInfo;
+	VkPipelineLayoutCreateInfo pipelineLayoutCreateInfo{};
 
 	pipelineLayoutCreateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
 	pipelineLayoutCreateInfo.pNext = nullptr;
