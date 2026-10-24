@@ -7,7 +7,7 @@ VulkanPipelineManager::~VulkanPipelineManager()
 
 }
 
-bool VulkanPipelineManager::Initialize(VkDevice device, VulkanPipelineCache* pipelineCache)
+bool VulkanPipelineManager::Initialize(VkDevice device, VulkanPipelineCache* pipeline_Cache)
 {
 
 	if (m_initialized)
@@ -20,7 +20,7 @@ bool VulkanPipelineManager::Initialize(VkDevice device, VulkanPipelineCache* pip
 
 		return false;
 	}
-	if (pipelineCache == nullptr)
+	if (pipeline_Cache == nullptr)
 	{
 		std::cerr
 			<< "VulkanPipelineManager::Initialize - "
@@ -30,7 +30,7 @@ bool VulkanPipelineManager::Initialize(VkDevice device, VulkanPipelineCache* pip
 	}
 
 
-	if (!pipelineCache->IsInitialized())
+	if (!pipeline_Cache->IsInitialized())
 	{
 		std::cerr
 			<< "VulkanPipelineManager::Initialize - "
@@ -40,7 +40,7 @@ bool VulkanPipelineManager::Initialize(VkDevice device, VulkanPipelineCache* pip
 
 	}
 	m_device = device;
-	pipelineCache = pipelineCache;
+	pipelineCache = pipeline_Cache;
 
 	m_initialized = true;
 

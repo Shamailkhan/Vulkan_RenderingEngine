@@ -17,7 +17,7 @@ public:
 	VulkanPipelineManager(const VulkanPipelineManager&) = delete;
 	VulkanPipelineManager& operator=(const VulkanPipelineManager&) = delete;
 
-	bool Initialize(VkDevice device, VulkanPipelineCache* pipelineCache);
+	bool Initialize(VkDevice device, VulkanPipelineCache* pipeline_Cache);
 	void Destroy();
 
 	VulkanPipeline* CreatePipeline(const std::string& name, const VulkanGraphicPipelineCreateInfo& createInfo);

@@ -9,7 +9,7 @@ VulkanPipeline::~VulkanPipeline()
 }
 
 
-VulkanPipeline::VulkanPipeline(VulkanPipeline& other) noexcept
+VulkanPipeline::VulkanPipeline(VulkanPipeline&& other) noexcept
 {
     m_device = other.m_device;
     m_pipeline = other.m_pipeline;
@@ -65,7 +65,7 @@ bool VulkanPipeline::Initialize(VkDevice device, VulkanPipelineCache& pipeline_C
 
         return false;
     }
-    if (createInfo.RenderPass.GetHandle() == VK_NULL_HANDLE)
+    if (createInfo.RenderPass == VK_NULL_HANDLE)
     {
         std::cout
             << "VulkanPipeline::Initialize - "
@@ -102,6 +102,7 @@ bool VulkanPipeline::Initialize(VkDevice device, VulkanPipelineCache& pipeline_C
     }
 
     m_Initialized = true;
+    return true;
 }
 
 
@@ -131,7 +132,7 @@ bool VulkanPipeline::CreateGraphicPipeline(VulkanPipelineCache& pipelineCache, c
 
         VkPipelineShaderStageCreateInfo stageInfo{};
 
-        stageInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+        stageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
         stageInfo.pNext = nullptr;
         stageInfo.flags = 0;
         stageInfo.stage = shaderStage.Stage;
@@ -154,7 +155,7 @@ bool VulkanPipeline::CreateGraphicPipeline(VulkanPipelineCache& pipelineCache, c
         ? nullptr
         : creatInfo.vertexInput.binding.data();
 
-    vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(creatInfo.vertexInput.binding.size());
+    vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(creatInfo.vertexInput.attribute.size());
     vertexInputInfo.pVertexAttributeDescriptions = creatInfo.vertexInput.attribute.empty() ? nullptr : creatInfo.vertexInput.attribute.data();
       
     /////..................INPUT ASSEMBLY ................////
@@ -224,7 +225,7 @@ bool VulkanPipeline::CreateGraphicPipeline(VulkanPipelineCache& pipelineCache, c
     depthstencilCreateInfo.stencilTestEnable = creatInfo.depthStencil.StencilTestEnable;
     depthstencilCreateInfo.front = creatInfo.depthStencil.front;
     depthstencilCreateInfo.back = creatInfo.depthStencil.back;
-    depthstencilCreateInfo.minDepthBounds = creatInfo.depthStencil.maxDepthBound;
+    depthstencilCreateInfo.minDepthBounds = creatInfo.depthStencil.minDepthBound;
     depthstencilCreateInfo.maxDepthBounds = creatInfo.depthStencil.maxDepthBound;
 
 
@@ -291,7 +292,7 @@ bool VulkanPipeline::CreateGraphicPipeline(VulkanPipelineCache& pipelineCache, c
     GraphicCreateInfo.pColorBlendState = &colorBlendInfo;
     GraphicCreateInfo.pDynamicState = creatInfo.dynamic_state.states.empty() ? nullptr : &dynamicCreateInfo;
     GraphicCreateInfo.layout = creatInfo.pipeline_layput;
-    GraphicCreateInfo.renderPass = creatInfo.RenderPass.GetHandle();
+    GraphicCreateInfo.renderPass = creatInfo.RenderPass;
     GraphicCreateInfo.subpass = creatInfo.subpass;
     GraphicCreateInfo.basePipelineHandle = VK_NULL_HANDLE;
     GraphicCreateInfo.basePipelineIndex = -1;

@@ -1,7 +1,6 @@
 #pragma once
 #include <vulkan/vulkan.h>
 #include<string>
-#include "VulkanRenderPass.h"
 #include<vector>
 #include "VulkanPipelineCache.h"
 struct VulkanPipelineShaderStage
@@ -103,7 +102,10 @@ struct VulkanPipelineColorBlendState
 };
 struct VulkanPipelineDynamicState
 {
-	std::vector<VkDynamicState> states;
+	std::vector<VkDynamicState> states = {
+		   VK_DYNAMIC_STATE_VIEWPORT,
+		   VK_DYNAMIC_STATE_SCISSOR
+	};
 };
 
 struct VulkanGraphicPipelineCreateInfo
@@ -124,7 +126,7 @@ struct VulkanGraphicPipelineCreateInfo
 	VulkanPipelineDynamicState dynamic_state;
 
 	VkPipelineLayout pipeline_layput = VK_NULL_HANDLE;
-	VulkanRenderPass RenderPass ;
+	VkRenderPass RenderPass = VK_NULL_HANDLE;
 	uint32_t subpass = 0;
 
 };
@@ -137,7 +139,7 @@ public:
 	VulkanPipeline(const VulkanPipeline&) = delete;
 	VulkanPipeline& operator=(const VulkanPipeline&) = delete;
 
-	VulkanPipeline(VulkanPipeline& other) noexcept;
+	VulkanPipeline(VulkanPipeline&& other) noexcept;
 	VulkanPipeline& operator=(VulkanPipeline&& other) noexcept;
 
 	bool Initialize(VkDevice device,VulkanPipelineCache& pipelineCache, const VulkanGraphicPipelineCreateInfo& createInfo);
