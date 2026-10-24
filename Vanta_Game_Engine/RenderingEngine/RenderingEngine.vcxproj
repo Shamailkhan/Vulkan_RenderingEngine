@@ -22,6 +22,7 @@
     <ClInclude Include="include\GLFWWindow.h" />
     <ClInclude Include="include\VulkanDepthImage.h" />
     <ClInclude Include="include\VulkanFramebuffer.h" />
+    <ClInclude Include="include\VulkanFramebufferManager.h" />
     <ClInclude Include="include\VulkanImage.h" />
     <ClInclude Include="include\VulkanImageView.h" />
     <ClInclude Include="include\VulkanInstanceProvider.h" />
@@ -40,6 +41,7 @@
     <ClCompile Include="src\GLFWWindow.cpp" />
     <ClCompile Include="src\VulkanDepthImage.cpp" />
     <ClCompile Include="src\VulkanFramebuffer.cpp" />
+    <ClCompile Include="src\VulkanFramebufferManager.cpp" />
     <ClCompile Include="src\VulkanImage.cpp" />
     <ClCompile Include="src\VulkanImageView.cpp" />
     <ClCompile Include="src\VulkanInstanceProvider.cpp" />
