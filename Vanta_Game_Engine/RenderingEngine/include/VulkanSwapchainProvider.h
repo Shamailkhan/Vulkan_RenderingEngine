@@ -10,7 +10,7 @@ class GLFWWindow;
 
 class VulkanSwapchainProvider
 {
-
+public:
 	VulkanSwapchainProvider(VkPhysicalDevice physicalDevice, VkDevice device, VkSurfaceKHR surface,
 		const QueueFamilyIndices& queueFamilequeue, GLFWWindow& window);
 

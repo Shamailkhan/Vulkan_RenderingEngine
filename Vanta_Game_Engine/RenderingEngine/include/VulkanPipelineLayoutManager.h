@@ -5,7 +5,7 @@
 #include <memory>
 class VulkanPipelineLayoutManager
 {
-
+public:
     VulkanPipelineLayoutManager() = default;
     ~VulkanPipelineLayoutManager();
 
