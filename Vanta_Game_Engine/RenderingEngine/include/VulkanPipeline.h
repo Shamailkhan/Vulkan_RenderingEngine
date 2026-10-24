@@ -1,8 +1,9 @@
 #pragma once
 #include <vulkan/vulkan.h>
 #include<string>
+#include "VulkanRenderPass.h"
 #include<vector>
-
+#include "VulkanPipelineCache.h"
 struct VulkanPipelineShaderStage
 {
 	VkShaderModule module = VK_NULL_HANDLE;
@@ -30,7 +31,7 @@ struct VulkanPipelineRasterizationSate
 	VkBool32 rasterizerDiscardEnable = VK_FALSE;
 	VkPolygonMode polygonMode = VK_POLYGON_MODE_FILL;
 
-	VkCullModeFlags CULLmODE = VK_CULL_MODE_BACK_BIT;
+	VkCullModeFlags CullMode = VK_CULL_MODE_BACK_BIT;
 	VkFrontFace  frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
 
 	VkBool32 depthBiasEnable = VK_FALSE;
@@ -67,11 +68,93 @@ struct VulkanPipelineDepthStencilState
 
 };
 
+struct VulkanPipelineColorBlenAttachment
+{
+	
+	VkBool32 blendEnable = VK_FALSE;
 
+	VkBlendFactor srcColorBlendFactor = VK_BLEND_FACTOR_ONE;
+	VkBlendFactor dstColorBlendFactor = VK_BLEND_FACTOR_ZERO;
+
+	VkBlendOp ColorBlendOp = VK_BLEND_OP_ADD;
+
+	VkBlendFactor srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE;
+
+	VkBlendFactor dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;
+	VkBlendOp aplhaBlendOp = VK_BLEND_OP_ADD;
+
+	VkColorComponentFlags colorWriteMask =
+		VK_COLOR_COMPONENT_R_BIT |
+		VK_COLOR_COMPONENT_G_BIT |
+		VK_COLOR_COMPONENT_B_BIT |
+		VK_COLOR_COMPONENT_A_BIT;
+
+};
+
+struct VulkanPipelineColorBlendState
+{
+	VkBool32 logicOpEnable = VK_FALSE;
+	VkLogicOp logicOp = VK_LOGIC_OP_COPY;
+
+	std::vector<VulkanPipelineColorBlenAttachment> attachments;
+	float blendConstants[4] = { 0.0f,0.0f,0.0f,0.0f };
+
+
+};
+struct VulkanPipelineDynamicState
+{
+	std::vector<VkDynamicState> states;
+};
+
+struct VulkanGraphicPipelineCreateInfo
+{
+	std::vector<VulkanPipelineShaderStage> shader_Stage;
+
+	VulkanPipelineVertexInput vertexInput;
+	VkPrimitiveTopology Topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
+
+	VkBool32 primitiveRestartEnable = VK_FALSE;
+
+	VulkanPipelineViewportState viewportState;
+	VulkanPipelineRasterizationSate rasterizationState;
+
+	VulkanPipelineMultiSampleState multiSampling;
+	VulkanPipelineDepthStencilState depthStencil;
+	VulkanPipelineColorBlendState colorBlend;
+	VulkanPipelineDynamicState dynamic_state;
+
+	VkPipelineLayout pipeline_layput = VK_NULL_HANDLE;
+	VulkanRenderPass RenderPass ;
+	uint32_t subpass = 0;
+
+};
 class VulkanPipeline
 {
+public:
+	VulkanPipeline() = default;
+	~VulkanPipeline();
+
+	VulkanPipeline(const VulkanPipeline&) = delete;
+	VulkanPipeline& operator=(const VulkanPipeline&) = delete;
+
+	VulkanPipeline(VulkanPipeline& other) noexcept;
+	VulkanPipeline& operator=(VulkanPipeline&& other) noexcept;
+
+	bool Initialize(VkDevice device,VulkanPipelineCache& pipelineCache, const VulkanGraphicPipelineCreateInfo& createInfo);
+
+	void Destroy();
+	
+	VkPipeline getHandle() { return m_pipeline; }
+	bool IsInitialzied()const { return m_Initialized; }
+
+private:
+	bool CreateGraphicPipeline(VulkanPipelineCache& pipelineCache, const VulkanGraphicPipelineCreateInfo& creatInfo);
+
+private:
+	VkDevice m_device = VK_NULL_HANDLE;
 
 
-
+	VkPipeline m_pipeline = VK_NULL_HANDLE;
+	bool m_Initialized = false;
 };
 

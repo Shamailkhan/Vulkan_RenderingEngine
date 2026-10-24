@@ -5,7 +5,7 @@
 
 class VulkanPipelineCache
 {
-
+public:
 
 	VulkanPipelineCache() = default;
 	~VulkanPipelineCache();
@@ -26,7 +26,7 @@ class VulkanPipelineCache
 	bool SaveToFile(const std::string FileName)const;
 	void Destroy();
 
-	VkPipelineCache GetInstance() const;
+	VkPipelineCache GetInstance() const { return m_pipelineCache; };
 
 	bool IsInitialized() const { return m_initialized; }
 
