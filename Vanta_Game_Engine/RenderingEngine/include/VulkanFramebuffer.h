@@ -22,14 +22,14 @@ public:
     VulkanFramebuffer& operator=(
         VulkanFramebuffer&& other) noexcept;
 
-    bool Initialized(VkDevice device,
+    bool Initialize(VkDevice device,
         const VulkanRenderPass& renderpass,
         const VulkanImageView& SwapchainImageView, const VulkanImageView& depthImageView, VkExtent2D extent);
     void Destroy();
 
     VkFramebuffer getHandle()const { return m_FrameBuffer; }
     VkExtent2D GetExtend() const { return m_extent; }
-    bool IsInitialized() const { return IsIntialize; }
+    bool IsInitialized() const { return IsInitialized; }
 private:
     bool CreateFrameBuffer(const VulkanRenderPass& renderPass, const VulkanImageView& swapChainImage,
         const VulkanImageView& depthImageView);

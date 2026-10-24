@@ -66,7 +66,7 @@ VulkanFramebuffer& VulkanFramebuffer::operator=(
 
 }
 
-bool VulkanFramebuffer::Initialized(VkDevice device, const VulkanRenderPass& renderpass, const VulkanImageView& SwapchainImageView, const VulkanImageView& depthImageView, VkExtent2D extent)
+bool VulkanFramebuffer::Initialize(VkDevice device, const VulkanRenderPass& renderpass, const VulkanImageView& SwapchainImageView, const VulkanImageView& depthImageView, VkExtent2D extent)
 {
     if (IsIntialize)
         return true;
