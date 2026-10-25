@@ -66,6 +66,18 @@
     <ClInclude Include="include\VulkanFramebufferManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\VulkanCommandBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VulkanCommandBufferManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VulkanCommandPool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VulkanSingleTimeCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GLFWWindow.cpp">
@@ -117,6 +129,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\VulkanFramebufferManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanCommandBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanCommandBufferManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanCommandPool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanSingleTimeCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

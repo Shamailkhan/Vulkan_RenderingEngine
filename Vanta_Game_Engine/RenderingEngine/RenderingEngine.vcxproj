@@ -20,6 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\GLFWWindow.h" />
+    <ClInclude Include="include\VulkanCommandBuffer.h" />
+    <ClInclude Include="include\VulkanCommandBufferManager.h" />
+    <ClInclude Include="include\VulkanCommandPool.h" />
     <ClInclude Include="include\VulkanDepthImage.h" />
     <ClInclude Include="include\VulkanFramebuffer.h" />
     <ClInclude Include="include\VulkanFramebufferManager.h" />
@@ -34,11 +37,15 @@
     <ClInclude Include="include\VulkanPipelineLayoutManager.h" />
     <ClInclude Include="include\VulkanPipelineManager.h" />
     <ClInclude Include="include\VulkanRenderPass.h" />
+    <ClInclude Include="include\VulkanSingleTimeCommand.h" />
     <ClInclude Include="include\VulkanSurfaceProvider.h" />
     <ClInclude Include="include\VulkanSwapchainProvider.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GLFWWindow.cpp" />
+    <ClCompile Include="src\VulkanCommandBuffer.cpp" />
+    <ClCompile Include="src\VulkanCommandBufferManager.cpp" />
+    <ClCompile Include="src\VulkanCommandPool.cpp" />
     <ClCompile Include="src\VulkanDepthImage.cpp" />
     <ClCompile Include="src\VulkanFramebuffer.cpp" />
     <ClCompile Include="src\VulkanFramebufferManager.cpp" />
@@ -53,6 +60,7 @@
     <ClCompile Include="src\VulkanPipelineLayoutManager.cpp" />
     <ClCompile Include="src\VulkanPipelineManager.cpp" />
     <ClCompile Include="src\VulkanRenderPass.cpp" />
+    <ClCompile Include="src\VulkanSingleTimeCommand.cpp" />
     <ClCompile Include="src\VulkanSurfaceProvider.cpp" />
     <ClCompile Include="src\VulkanSwapchainProvider.cpp" />
   </ItemGroup>
