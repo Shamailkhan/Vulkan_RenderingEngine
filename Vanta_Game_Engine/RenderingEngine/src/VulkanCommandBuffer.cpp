@@ -1,6 +1,8 @@
 #include "VulkanCommandBuffer.h"
 #include <iostream>
 
+// there is no destructor since manager/pool handles allocation and freeing 
+
 VulkanCommandBuffer::VulkanCommandBuffer( VulkanCommandBuffer&& other) noexcept
 {
 	m_CommandBuffer = other.m_CommandBuffer;

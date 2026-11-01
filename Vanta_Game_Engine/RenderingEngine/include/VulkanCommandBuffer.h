@@ -23,14 +23,14 @@ public:
 
 	bool InAllocated() { return m_CommandBuffer != VK_NULL_HANDLE; }
 	bool isRecording() { return m_recording; }
+	void SetHandle(VkCommandBuffer commandBuffer,
+		VkCommandBufferLevel level);
 
+	void Clear();
 private:
 	friend class VulkanCommandPool;
 	friend class VulknaCommandBufferManager;
 
-	void SetHandle(VkCommandBuffer commandBuffer,
-		VkCommandBufferLevel level);
-	void Clear();
 private:
 	VkCommandBuffer m_CommandBuffer = VK_NULL_HANDLE;
 	VkCommandBufferLevel m_level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
