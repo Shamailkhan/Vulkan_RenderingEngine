@@ -11,7 +11,7 @@ bool VulkanSingleTimeCommand::Begin(VkDevice device, VulkanCommandPool& commandP
         return false;
 
     }
-    if (m_device == VK_NULL_HANDLE)
+    if (device == VK_NULL_HANDLE)
     {
         std::cout
             << "VulkanSingleTimeCommand: "
@@ -30,7 +30,8 @@ bool VulkanSingleTimeCommand::Begin(VkDevice device, VulkanCommandPool& commandP
         return false;
 
     }
-
+    m_device = device;
+    m_commandPool = &commandPool;
     VkCommandBufferAllocateInfo AllocateInfo{};
     AllocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
     AllocateInfo.commandPool = commandPool.GetHandle();
@@ -50,8 +51,7 @@ bool VulkanSingleTimeCommand::Begin(VkDevice device, VulkanCommandPool& commandP
 
         return false;
     }
-    m_device = device;
-    m_commandPool = &commandPool;
+    
     m_Commandbuffer.SetHandle(commandBuffer, VK_COMMAND_BUFFER_LEVEL_PRIMARY);
 
 

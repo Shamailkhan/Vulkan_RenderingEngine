@@ -29,7 +29,7 @@ public:
 
     VkFramebuffer getHandle()const { return m_FrameBuffer; }
     VkExtent2D GetExtend() const { return m_extent; }
-    bool IsInitialized() const { return IsInitialized; }
+    bool IsInitialized() const { return IsIntialize; }
 private:
     bool CreateFrameBuffer(const VulkanRenderPass& renderPass, const VulkanImageView& swapChainImage,
         const VulkanImageView& depthImageView);

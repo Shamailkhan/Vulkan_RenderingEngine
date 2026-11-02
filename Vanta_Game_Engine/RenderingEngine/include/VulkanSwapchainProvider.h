@@ -36,7 +36,7 @@ public:
 	VkFormat getImageFormat() const { return m_imagesFormat; }
 	VkExtent2D getExtent()const { return imageExtend; }
 	uint32_t getImageCount() const { return static_cast<uint32_t>(m_images.size()); }
-	bool isInitialized() { return isInitialized; }
+	bool isInitialized() { return isInitialize; }
 
 private:
 
@@ -82,7 +82,7 @@ private:
 
 	VkFormat m_imagesFormat = VK_FORMAT_UNDEFINED;
 	VkExtent2D imageExtend{};
-	bool isInitialized = false;
+	bool isInitialize = false;
 
 	// VkSwapchainCreateInfoKHR is being used.
 	std::array<uint32_t, 2> m_sharedQueueFamilyIndices{};

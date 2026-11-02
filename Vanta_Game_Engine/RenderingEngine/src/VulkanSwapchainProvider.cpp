@@ -21,7 +21,7 @@ VulkanSwapchainProvider::~VulkanSwapchainProvider()
 
 bool VulkanSwapchainProvider::Initialize()
 {
-	if (isInitialized )
+	if (isInitialize)
 	{
 		std::cout
 			<< "Swapchain is already initialized."
@@ -125,7 +125,7 @@ bool VulkanSwapchainProvider::Initialize()
 	}
 
 
-	isInitialized = true;
+	isInitialize = true;
 
 
 	std::cout
@@ -190,7 +190,7 @@ bool VulkanSwapchainProvider::Recreate()
 		DestroySwapChain();
 		return false;
 	}
-	isInitialized = true;
+	isInitialize = true;
 	std::cout
 		<< "Vulkan swapchain recreated successfully."
 		<< std::endl;
@@ -217,7 +217,7 @@ void VulkanSwapchainProvider::DestroySwapChain()
 
 	imageExtend = {};
 
-	isInitialized = false;
+	isInitialize = false;
 }
 
 bool VulkanSwapchainProvider::CreateSwapChain()

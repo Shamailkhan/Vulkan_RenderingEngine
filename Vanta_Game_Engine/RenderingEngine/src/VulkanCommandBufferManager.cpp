@@ -39,7 +39,7 @@ bool VulkanCommandBufferManager::Initialize(VkDevice device, const QueueFamilyIn
 	}
 
 	m_Device = device;
-	if (!CreateGraphicCommandPool(queueFamilyIndices.computeFamily.value()))
+	if (!CreateGraphicCommandPool(queueFamilyIndices.graphicFamily.value()))
 	{
 		Destroy();
 		return false;
@@ -135,7 +135,7 @@ bool VulkanCommandBufferManager::AllocateTransferCommandBuffer(uint32_t count)
 
 		return false;
 	}
-	return AllocateCommandBuffer(m_graphicCommandPool, m_TransferCommandBuffers, count);
+	return AllocateCommandBuffer(m_TransferCommandPool, m_TransferCommandBuffers, count);
 }
 
 void VulkanCommandBufferManager::FreeGraphicsCommandBuffers()
@@ -328,9 +328,5 @@ void VulkanCommandBufferManager::FreeCommandBuffer(VulkanCommandPool& pool, std:
 	buffers.clear();
 }
 
-bool VulkanCommandBufferManager::HasTransferPool() const
-{
-	return m_hasTranferPool;
-}
 
 

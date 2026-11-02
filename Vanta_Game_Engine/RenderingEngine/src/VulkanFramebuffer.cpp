@@ -175,10 +175,6 @@ bool VulkanFramebuffer::CreateFrameBuffer(const VulkanRenderPass& renderPass, co
     return true;
 }
 
-VkFramebuffer VulkanFramebuffer::getHandle() const
-{
-    return m_FrameBuffer;
-}
 
 void  VulkanFramebuffer::Destroy()
 {

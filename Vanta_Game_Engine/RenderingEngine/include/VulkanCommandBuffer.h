@@ -29,7 +29,7 @@ public:
 	void Clear();
 private:
 	friend class VulkanCommandPool;
-	friend class VulknaCommandBufferManager;
+	friend class VulkanCommandBufferManager;
 
 private:
 	VkCommandBuffer m_CommandBuffer = VK_NULL_HANDLE;

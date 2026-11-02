@@ -17,7 +17,7 @@ class   VulkanSingleTimeCommand
 	bool EndAndSubmit(VkQueue queue);
 	VulkanCommandBuffer& GetCommandBuffer();
 	const VulkanCommandBuffer& GetCommandBuffer()const;
-	bool isActive()const { return isActive; }
+	bool Active()const { return isActive; }
 
 private:
 	VkDevice m_device = VK_NULL_HANDLE;

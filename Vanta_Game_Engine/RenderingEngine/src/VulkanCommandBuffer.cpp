@@ -106,7 +106,7 @@ bool VulkanCommandBuffer::End()
 	return true;
 }
 
-bool VulkanCommandBuffer::Reset(VkCommandBufferResetFlags flags = 0)
+bool VulkanCommandBuffer::Reset(VkCommandBufferResetFlags flags)
 {
 	if (m_CommandBuffer == VK_NULL_HANDLE)
 	{
