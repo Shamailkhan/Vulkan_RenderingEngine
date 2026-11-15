@@ -55,8 +55,8 @@ public:
 
 	VkPhysicalDeviceMemoryProperties getMemoryProperties() const;
 
+	inline VkPhysicalDevice getPhysicalDevice() const { return m_physicaldevice; }
 	SwapChainSupportDetail getPhysicalDeviceSwapChainDetail() const;
-	inline VkPhysicalDevice getPhysicalDevice() { return m_physicaldevice; }
 	bool isInitialized() const;
 
 private:
