@@ -182,21 +182,90 @@ bool VulkanBuffer::CreateBuffer(const VulkanBufferDescription& description)
 	createInfo.usage = description.usage;
 	createInfo.sharingMode = description.sharingMode;
 
-	createInfo.
+	if (description.sharingMode == VK_SHARING_MODE_CONCURRENT)
+	{
+		createInfo.queueFamilyIndexCount = static_cast<uint32_t>(description.queueFamilyIndices.size());
 
+		createInfo.pQueueFamilyIndices = description.queueFamilyIndices.data();
 
+	}
 
+	VkResult result = vkCreateBuffer(m_device, &createInfo, nullptr, &m_buffer);
+	if (result != VK_SUCCESS)
+	{
+		std::cerr
+			<< "VulkanBuffer: Failed to create buffer. VkResult = "
+			<< result << '\n';
+
+		m_buffer = VK_NULL_HANDLE;
+
+		return false;
+	}
+
+	return true;
 
 
 }
 bool VulkanBuffer::AllocateMemory(VkPhysicalDevice physicalDevice, VkMemoryPropertyFlags properties)
 {
 
+	VkMemoryRequirements MemoryRequirments{};
+
+
+	vkGetBufferMemoryRequirements(m_device, m_buffer, &MemoryRequirments);
+
+	m_allocationSize = MemoryRequirments.size;
+
+	uint32_t memoryTypeIndex = FindMemoryType(physicalDevice, MemoryRequirments.memoryTypeBits, properties);
+
+	if (memoryTypeIndex == UINT32_MAX)
+	{
+		std::cerr
+			<< "VulkanBuffer: Failed to find suitable memory type.\n";
+
+		return false;
+	}
+
+	VkMemoryAllocateInfo allocateInfo{};
+
+	allocateInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+
+	allocateInfo.allocationSize = MemoryRequirments.size;
+	allocateInfo.pNext = nullptr;
+	allocateInfo.memoryTypeIndex = memoryTypeIndex;
+
+
+	VkResult result = vkAllocateMemory(m_device, &allocateInfo, nullptr, &m_memory);
+
+	if (result != VK_SUCCESS)
+	{
+		std::cerr
+			<< "VulkanBuffer: Failed to allocate memory. VkResult = "
+			<< result << '\n';
+
+		m_memory = VK_NULL_HANDLE;
+
+		return false;
+	}
+	return true;
 }
 
 
 bool VulkanBuffer::BindMemory()
 {
+
+	VkResult result = vkBindBufferMemory(m_device, m_buffer, m_memory, 0);
+
+
+	if (result != VK_SUCCESS)
+	{
+		std::cerr
+			<< "VulkanBuffer: Failed to bind memory. VkResult = "
+			<< result << '\n';
+
+		return false;
+	}
+	return true;
 
 }
 
