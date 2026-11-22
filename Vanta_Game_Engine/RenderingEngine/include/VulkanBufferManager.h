@@ -1,13 +1,14 @@
 #pragma once
 
 #include "VulkanBuffer.h"
-#include "VulkanLogicalDeviceProvider.h"
-#include "VulkanPhysicalDeviceProvider.h"
+
 #include <vulkan/vulkan.h>
 #include <memory>
 #include <string>
 #include <unordered_map>
 
+class VulkanPhysicalDeviceProvider;
+class VulkanLogicalDeviceProvider;
 class  VulkanBufferManager
 {
 
@@ -39,7 +40,7 @@ class  VulkanBufferManager
     bool IsInitialized() const;
 
 private:
-    const VulkanLogicalDeviceProvider* m_logicalDEvice = nullptr;
+    const VulkanLogicalDeviceProvider* m_logicalDevice = nullptr;
     const VulkanPhysicalDeviceProvider* m_physicalDevice = nullptr;
     std::unordered_map< std::string, std::unique_ptr<VulkanBuffer>> m_buffers;
 
