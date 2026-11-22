@@ -37,7 +37,7 @@ class  VulkanBuffer
 		const VulkanBufferDescription& description
 	);
 	void Destroy();
-
+	bool Map();
 	void Unmap();
 
 	bool Write(const void* data, VkDeviceSize size,
@@ -46,14 +46,14 @@ class  VulkanBuffer
 	VkBuffer getHandler() const { return m_buffer;}
 	VkDeviceMemory GetMemory() const { return m_memory; }
 
-	VkDeviceSize GetSize() const;
-	VkDeviceSize getAllocationSize() const;
+	VkDeviceSize GetSize() const { return m_size; }
+	VkDeviceSize getAllocationSize() const { return m_allocationSize; }
 
-	VkBufferUsageFlags GetUsage() const;
-	VkMemoryPropertyFlags GetMemoryProperties() const;
+	VkBufferUsageFlags GetUsage() const { return m_usage; }
+	VkMemoryPropertyFlags GetMemoryProperties() const { return m_memoryProperties; }
 
-	bool isMapped()const;
-	bool isCreated() const;
+	bool isMapped()const { return m_mappedMemory != nullptr; }
+	bool isCreated() const { return m_initialized; }
 
 private:
 	bool CreateBuffer(const VulkanBufferDescription& description);

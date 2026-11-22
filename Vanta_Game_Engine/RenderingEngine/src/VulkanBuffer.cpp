@@ -162,13 +162,136 @@ void VulkanBuffer::Destroy()
 	m_initialized = false;
 }
 
+bool VulkanBuffer::Map()
+{
+	if (!m_initialized && m_buffer == VK_NULL_HANDLE)
+	{
+		std::cerr << "VulkanBuffer: Cannot map an invalid buffer.\n";
+		return false;
+
+	}
+	if (m_memory == VK_NULL_HANDLE)
+	{
+		std::cerr << "VulkanBuffer: Invalid device memory.\n";
+		return false;
+	}
+
+	if (!m_memoryProperties & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT)
+	{
+		std::cerr
+			<< "VulkanBuffer: Memory is not host visible.\n";
+
+		return false;
+	}
+	if(m_mappedMemory != nullptr)
+	{
+		return true;
+	}
+
+	VkResult result = vkMapMemory(m_device, m_memory, 0, VK_WHOLE_SIZE, 0, &m_mappedMemory);
+	if (result != VK_SUCCESS)
+	{
+		std::cerr
+			<< "VulkanBuffer: Failed to map memory. VkResult = "
+			<< result << '\n';
+
+		m_mappedMemory = nullptr;
+
+		return false;
+	}
+
+	return true;
+}
+
 void VulkanBuffer::Unmap()
 {
+	if (m_mappedMemory != nullptr && m_device != VK_NULL_HANDLE && m_memory != VK_NULL_HANDLE)
+	{
+		vkUnmapMemory(m_device, m_memory);
+		m_mappedMemory = nullptr;
+	}
+
+
+
 }
 
 bool VulkanBuffer::Write(const void* data, VkDeviceSize size, VkDeviceSize offset)
 {
-	return false;
+	if (data == nullptr || size == 0)
+	{
+		return false;
+	}
+
+	if (m_buffer == VK_NULL_HANDLE && m_memory == VK_NULL_HANDLE)
+	{
+		return false;
+	}
+
+	if (!m_memoryProperties & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT)
+	{
+		std::cerr
+			<< "VulkanBuffer: Cannot write to non-host-visible memory.\n";
+
+		return false;
+	}
+
+	if (offset > m_size || size > m_size - offset)
+	{
+		std::cerr
+			<< "VulkanBuffer: Write range exceeds buffer size.\n";
+
+		return false;
+
+	}
+	if (!Map())
+	{
+		return false;
+	}
+
+	std::memcpy(
+		static_cast<char*>(m_mappedMemory) + offset,
+		data,
+		static_cast<size_t>(size)
+	);
+
+	/*
+	 * Host-coherent memory does not require an explicit flush.
+	 */
+	if (!(m_memoryProperties & VK_MEMORY_PROPERTY_HOST_COHERENT_BIT))
+	{
+		/*
+		 * The entire allocation was mapped, so flushing the
+		 * whole allocation avoids nonCoherentAtomSize alignment
+		 * problems for partial writes.
+		 */
+		VkMappedMemoryRange memoryRange{};
+
+		memoryRange.sType =
+			VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
+
+		memoryRange.memory = m_memory;
+
+		memoryRange.offset = 0;
+
+		memoryRange.size = VK_WHOLE_SIZE;
+
+		VkResult result = vkFlushMappedMemoryRanges(
+			m_device,
+			1,
+			&memoryRange
+		);
+
+		if (result != VK_SUCCESS)
+		{
+			std::cerr
+				<< "VulkanBuffer: Failed to flush mapped memory. "
+				<< "VkResult = " << result << '\n';
+
+			return false;
+		}
+	}
+
+	return true;
 }
 
 
@@ -273,6 +396,19 @@ uint32_t VulkanBuffer::FindMemoryType(VkPhysicalDevice physicalDevice, uint32_t 
 	VkMemoryPropertyFlags properties)const
 {
 
+	VkPhysicalDeviceMemoryProperties memoryProperties{};
+	vkGetPhysicalDeviceMemoryProperties(physicalDevice, &memoryProperties);
+	for (uint32_t i = 0; i < memoryProperties.memoryTypeCount; ++i)
+	{
+		bool typeSupported = (typeFilter & (1u << i)) != 0;
+		bool propertiesSupported = (memoryProperties.memoryTypes[i].propertyFlags * properties) == properties;
+		if (typeSupported && propertiesSupported)
+		{
+			return i;
+		}
+	}
+
+	return UINT32_MAX;
 }
 
 
