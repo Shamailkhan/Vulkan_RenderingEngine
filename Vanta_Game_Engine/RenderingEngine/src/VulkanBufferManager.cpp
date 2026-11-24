@@ -104,5 +104,6 @@ size_t VulkanBufferManager::Count() const
 
 bool VulkanBufferManager::IsInitialized() const
 {
+
 	return m_initialized;
 }
