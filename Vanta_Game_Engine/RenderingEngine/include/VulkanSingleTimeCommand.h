@@ -6,7 +6,7 @@
 
 class   VulkanSingleTimeCommand
 {
-
+public:
 	VulkanSingleTimeCommand() = default;
 	~VulkanSingleTimeCommand() = default;
 

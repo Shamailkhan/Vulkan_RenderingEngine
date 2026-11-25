@@ -22,7 +22,7 @@ public:
 	bool UploadBuffer(const void* sourceData, VkDeviceSize size, VulkanBuffer& destinationBuffer,
 		VkDeviceSize destinationOffset = 0);
 
-	bool isInitialized()const { return Initialize; }
+	bool Initialized()const { return isInitialize; }
 private:
 
 	const bool ValidateUpload(const void* sourceData, VkDeviceSize size, const VulkanBuffer& destinationBuffer,
@@ -34,7 +34,7 @@ private:
 	const VulkanPhysicalDeviceProvider* m_physicalDevice = nullptr;
 
 	VulkanCommandPool* m_commandPool = nullptr;
-	bool Initialize = false;
+	bool isInitialize = false;
 
 };
 
